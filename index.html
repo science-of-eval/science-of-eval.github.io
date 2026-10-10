@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SciEval · Workshop on the Science of Evaluation · ICLR 2027</title>
+<meta name="description" content="SciEval: The 1st Workshop on the Science of Evaluation at ICLR 2027. Advancing the science and practice of AI evaluation, from benchmarks and evaluators to infrastructure and real-world claims.">
+<meta property="og:title" content="SciEval · Workshop on the Science of Evaluation · ICLR 2027">
+<meta property="og:description" content="Advancing the science and practice of AI evaluation: from benchmarks and evaluators to infrastructure, and real-world claims.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://science-of-eval.github.io/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script>
+  // Apply a saved theme before first paint.
+  try { var t = localStorage.getItem('scieval-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #2c2c2c;
+    --muted: #6b7280;
+    --soft: #f5f5f4;
+    --line: #d7d7d4;
+    --line-strong: #4b5563;
+    --blue: #3b82f6;
+    --blue-soft: #eff6ff;
+    --yellow: #ffe45e;
+    --orange: #ff9f43;
+    --body-secondary: #44403c;
+    --header-bg: rgba(255, 255, 255, 0.94);
+    --inverse-bg: #2c2c2c;
+    --inverse-fg: #ffffff;
+    --inverse-muted: #d6d3d1;
+    --inverse-accent: #93c5fd;
+    --card: #ffffff;
+    --serif: "Iowan Old Style", "Apple Garamond", Baskerville, "Times New Roman", "Droid Serif", Times, "Source Serif Pro", serif;
+    --mono: "Space Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+  html[data-theme="dark"] {
+    --bg: #121212; --fg: #f2f2ef; --muted: #aaa6a0; --soft: #1d1d1b; --line: #3a3a37; --line-strong: #d6d3d1;
+    --blue: #60a5fa; --blue-soft: #172554; --body-secondary: #d6d3d1; --header-bg: rgba(18, 18, 18, 0.94);
+    --inverse-bg: #f2f2ef; --inverse-fg: #181818; --inverse-muted: #57534e; --inverse-accent: #2563eb; --card: #171716;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+      --bg: #121212; --fg: #f2f2ef; --muted: #aaa6a0; --soft: #1d1d1b; --line: #3a3a37; --line-strong: #d6d3d1;
+      --blue: #60a5fa; --blue-soft: #172554; --body-secondary: #d6d3d1; --header-bg: rgba(18, 18, 18, 0.94);
+      --inverse-bg: #f2f2ef; --inverse-fg: #181818; --inverse-muted: #57534e; --inverse-accent: #2563eb; --card: #171716;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: var(--serif); font-size: 17px; line-height: 1.72;
+    text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+    transition: background-color .2s ease, color .2s ease;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible { outline: 3px solid rgba(59,130,246,.45); outline-offset: 4px; }
+  .u {
+    text-decoration: underline; text-decoration-color: rgba(59,130,246,.55);
+    text-underline-offset: 4px; text-decoration-thickness: 1px;
+  }
+  a:hover .u, .u:hover { color: var(--blue); text-decoration-color: var(--blue); }
+  .shell { width: min(1120px, calc(100% - 64px)); margin: 0 auto; }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--header-bg); border-bottom: 1px solid rgba(75,85,99,.18);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+  .nav { min-height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 24px; position: relative; }
+  .brand { font-family: var(--mono); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; white-space: nowrap; }
+  .brand::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 10px; background: var(--blue); }
+  .brand small { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 8px; letter-spacing: 0; }
+  .nav-right { display: flex; align-items: center; gap: 4px; }
+  .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 15px; }
+  .nav-links a { display: block; padding: 7px 9px; border: 1px solid transparent; transition: background .16s ease, border-color .16s ease; }
+  .nav-links a:hover, .nav-links a.active { background: var(--soft); border-color: var(--line-strong); }
+  .icon-btn {
+    appearance: none; width: 42px; height: 42px; display: grid; place-items: center; padding: 0;
+    color: var(--fg); background: transparent; border: 1px solid transparent; cursor: pointer;
+    transition: background-color .16s ease, border-color .16s ease;
+  }
+  .icon-btn:hover { background: var(--soft); border-color: var(--line-strong); }
+  .menu-btn { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.62fr);
+    gap: clamp(48px, 7vw, 96px); align-items: center; padding: 84px 0 76px;
+  }
+  .eyebrow { margin: 0 0 22px; color: var(--muted); font-family: var(--mono); font-size: 13px; line-height: 1.5; }
+  .hero h1 {
+    margin: 0 0 26px; font-family: var(--mono); font-weight: 400;
+    font-size: clamp(38px, 5.6vw, 66px); letter-spacing: -0.06em; line-height: 1.06;
+  }
+  .hero h1 .pre { display: block; font-size: 0.36em; letter-spacing: -0.03em; color: var(--muted); margin-bottom: 14px; }
+  .hero h1 .hl { box-shadow: inset 0 -0.16em 0 var(--blue-soft); }
+  .hero-intro { max-width: 720px; margin: 0; font-size: 18px; line-height: 1.7; }
+  .hero-intro + .hero-intro { margin-top: 16px; color: var(--body-secondary); font-size: 16px; }
+  .hero-intro strong { font-weight: 600; }
+  .link-row { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 30px; font-family: var(--mono); font-size: 13px; }
+  .link-row .soon { color: var(--muted); }
+
+  .hero-card { align-self: end; }
+  .hero-figure { background: var(--soft); padding: 22px 18px 12px; border-bottom: 6px solid var(--blue); }
+  .hero-figure svg { width: 100%; height: auto; display: block; }
+  .hero-meta { padding-top: 16px; }
+  .hero-meta dl { margin: 0; display: grid; grid-template-columns: 64px 1fr; gap: 6px 14px; }
+  .hero-meta dt { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 4px; }
+  .hero-meta dd { margin: 0; font-size: 15px; line-height: 1.55; }
+  .hero-meta dd span { color: var(--muted); }
+
+  /* ---------- Sections ---------- */
+  .section { padding: 76px 0; border-top: 1px solid var(--line); }
+  .band { display: grid; grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1.58fr); gap: clamp(40px, 7vw, 88px); align-items: start; }
+  .band-head { position: sticky; top: 110px; }
+  .section-index { display: block; margin-bottom: 18px; color: var(--muted); font-family: var(--mono); font-size: 12px; }
+  .band-head h2 { margin: 0; font-family: var(--mono); font-size: clamp(30px, 4vw, 46px); font-weight: 400; letter-spacing: -0.055em; line-height: 1.15; }
+  .underline { width: 46px; height: 6px; margin-top: 16px; background: var(--blue); }
+  .band-head p { margin: 22px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+  .prose p { margin: 0 0 18px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { font-weight: 600; }
+  .sub { margin: 44px 0 16px; font-family: var(--mono); font-size: 13px; color: var(--muted); font-weight: 400; }
+
+  .panel { background: var(--soft); border-top: 6px solid var(--blue); }
+  .row { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 18px; padding: 20px 26px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row .k { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 4px; }
+  .row h3 { margin: 0; font-size: 18.5px; font-weight: 600; line-height: 1.4; }
+  .row p { margin: 4px 0 0; color: var(--body-secondary); font-size: 15px; line-height: 1.6; }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); padding: 20px 22px 20px; transition: border-color .16s ease, transform .16s ease; }
+  .card:hover { border-color: var(--line-strong); transform: translateY(-1px); }
+  .card .n { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .card h3 { margin: 6px 0 6px; font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.35; }
+  .card p { margin: 0; color: var(--body-secondary); font-size: 14.5px; line-height: 1.6; }
+
+  .note-box { margin-top: 22px; padding: 20px 24px; background: var(--blue-soft); border-left: 6px solid var(--blue); }
+  .note-box h3 { margin: 0 0 4px; font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+  .note-box p { margin: 0; font-size: 15.5px; color: var(--body-secondary); }
+  .note-box + .note-box { margin-top: 14px; }
+  .note-box.plain { background: var(--soft); border-left-color: var(--line-strong); }
+
+  /* Dates */
+  .date-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 20px 26px; border-bottom: 1px solid var(--line); }
+  .date-row:last-child { border-bottom: 0; }
+  .date-row h3 { margin: 0; font-size: 18.5px; font-weight: 600; line-height: 1.4; }
+  .date-row .d { font-family: var(--mono); font-size: 13px; color: var(--muted); text-align: right; white-space: nowrap; }
+  .tag {
+    display: inline-block; margin-left: 8px; padding: 1px 6px; vertical-align: 2px;
+    font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; line-height: 1.6;
+    color: #1b1b1b; font-style: normal;
+  }
+  .tag.orange { background: var(--orange); }
+  .tag.yellow { background: var(--yellow); }
+  .tag.blue { background: var(--blue); color: #fff; }
+  .small-note { margin: 16px 0 0; color: var(--muted); font-size: 14px; }
+
+  /* People */
+  .people { display: grid; gap: 34px 22px; }
+  .people.speakers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .people.organizers { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 30px 16px; }
+  .photo {
+    position: relative; aspect-ratio: 1 / 1; overflow: hidden;
+    background: var(--soft); border-bottom: 6px solid var(--blue);
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.88) contrast(1.02); transition: transform .3s ease, filter .3s ease; }
+  .person a:hover .photo img { transform: scale(1.03); filter: saturate(1) contrast(1.02); }
+  .photo .initials {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--mono); font-size: 34px; letter-spacing: -0.04em; color: var(--muted);
+  }
+  .photo.tba { border: 1px dashed var(--line-strong); border-bottom: 6px solid var(--line); background: transparent; }
+  .person .name { margin-top: 12px; font-size: 18px; font-weight: 600; line-height: 1.35; }
+  .person .aff { margin-top: 2px; color: var(--muted); font-size: 14.5px; line-height: 1.45; }
+  .organizers .name { font-size: 16.5px; }
+  .organizers .aff { font-size: 14px; }
+
+  /* Schedule */
+  .sched { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+  .sched-col h3 { margin: 0 0 10px; font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); }
+  .slot { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+  .slot:last-child { border-bottom: 0; }
+  .slot .t { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 3px; white-space: nowrap; }
+  .slot.brk { color: var(--muted); font-style: italic; }
+  .sched-notes { margin-top: 22px; }
+  .sched-notes .note-box { margin-top: 0; }
+
+  /* Footer / contact */
+  footer { padding: 56px 0 46px; background: var(--inverse-bg); color: var(--inverse-fg); }
+  .footer-inner { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; flex-wrap: wrap; }
+  .footer-title { max-width: 680px; margin: 0; font-family: var(--mono); font-size: clamp(26px, 4vw, 42px); font-weight: 400; letter-spacing: -0.055em; line-height: 1.18; }
+  .footer-title span { color: var(--inverse-accent); }
+  .footer-contact { font-family: var(--mono); font-size: 13px; text-align: right; color: var(--inverse-muted); }
+  .footer-contact .placeholder { display: inline-block; margin-top: 8px; padding: 8px 12px; border: 1px dashed var(--inverse-muted); }
+  .footer-note { margin: 34px 0 0; padding-top: 18px; border-top: 1px solid rgba(127,127,127,.3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--inverse-muted); font-family: var(--mono); font-size: 11px; }
+  .footer-note a:hover { color: var(--inverse-accent); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1060px) {
+    .people.organizers { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .nav-links { font-size: 14px; }
+    .nav-links a { padding: 6px 6px; }
+  }
+  @media (max-width: 960px) {
+    .menu-btn { display: grid; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: -32px; right: -32px; flex-direction: column; align-items: stretch;
+      padding: 8px 32px 16px; background: var(--bg); border-bottom: 1px solid var(--line); font-size: 16px;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 11px 8px; }
+    .band { grid-template-columns: 1fr; gap: 34px; }
+    .band-head { position: static; }
+    .people.organizers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    .shell { width: min(100% - 32px, 1120px); }
+    .nav { min-height: 70px; }
+    .nav-links { left: -16px; right: -16px; padding: 8px 16px 16px; }
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 56px 0 56px; }
+    .section { padding: 58px 0; }
+    .cards, .sched { grid-template-columns: 1fr; }
+    .people.speakers, .people.organizers { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 16px; }
+    .row { grid-template-columns: 34px minmax(0, 1fr); padding: 18px 18px; gap: 10px; }
+    .date-row { grid-template-columns: 1fr; gap: 2px; padding: 16px 18px; }
+    .date-row .d { text-align: left; order: -1; }
+    .slot { grid-template-columns: 96px minmax(0, 1fr); padding: 11px 14px; }
+    .footer-contact { text-align: left; }
+    .brand small { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="shell nav">
+    <a class="brand" href="#top">SciEval<small>ICLR 2027</small></a>
+    <div class="nav-right">
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">about</a></li>
+        <li><a href="#cfp">call</a></li>
+        <li><a href="#dates">dates</a></li>
+        <li><a href="#speakers">speakers</a></li>
+        <li><a href="#schedule">schedule</a></li>
+        <li><a href="#organizers">organizers</a></li>
+        <li><a href="#contact">contact</a></li>
+      </ul>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ======================= HERO ======================= -->
+<section class="shell hero">
+  <div>
+    <p class="eyebrow">ICLR 2027 workshop · San Francisco, California</p>
+    <h1><span class="pre">SciEval · The 1st Workshop on the</span>Science of <span class="hl">Evaluation</span></h1>
+    <p class="hero-intro">Advancing the <strong>science and practice of AI evaluation</strong>: from benchmarks and evaluators to infrastructure, and real-world claims.</p>
+    <p class="hero-intro">Benchmarks now steer how models are built, selected, trained, and deployed, yet the evaluations themselves are rarely validated. SciEval brings together work on building better evaluations and on studying evaluation as a scientific object in its own right.</p>
+    <div class="link-row">
+      <a class="u" href="#cfp">call for papers ↗</a>
+      <a class="u" href="#dates">important dates ↗</a>
+      <a class="u" href="#speakers">speakers ↗</a>
+      <span class="soon">openreview · coming soon</span>
+    </div>
+  </div>
+  <aside class="hero-card" aria-label="Workshop at a glance">
+    <div class="hero-figure" aria-hidden="true">
+      <svg viewBox="0 0 420 260">
+        <g stroke="var(--line)" stroke-width="1">
+          <line x1="10" y1="40" x2="410" y2="40"/><line x1="10" y1="95" x2="410" y2="95"/>
+          <line x1="10" y1="150" x2="410" y2="150"/><line x1="10" y1="205" x2="410" y2="205"/>
+        </g>
+        <line x1="10" y1="230" x2="410" y2="230" stroke="var(--fg)" stroke-width="1.5"/>
+        <g stroke="var(--fg)" stroke-width="1.2" opacity=".55">
+          <line x1="10" y1="230" x2="10" y2="242"/><line x1="30" y1="230" x2="30" y2="236"/><line x1="50" y1="230" x2="50" y2="236"/><line x1="70" y1="230" x2="70" y2="236"/><line x1="90" y1="230" x2="90" y2="242"/><line x1="110" y1="230" x2="110" y2="236"/><line x1="130" y1="230" x2="130" y2="236"/><line x1="150" y1="230" x2="150" y2="236"/><line x1="170" y1="230" x2="170" y2="242"/><line x1="190" y1="230" x2="190" y2="236"/><line x1="210" y1="230" x2="210" y2="236"/><line x1="230" y1="230" x2="230" y2="236"/><line x1="250" y1="230" x2="250" y2="242"/><line x1="270" y1="230" x2="270" y2="236"/><line x1="290" y1="230" x2="290" y2="236"/><line x1="310" y1="230" x2="310" y2="236"/><line x1="330" y1="230" x2="330" y2="242"/><line x1="350" y1="230" x2="350" y2="236"/><line x1="370" y1="230" x2="370" y2="236"/><line x1="390" y1="230" x2="390" y2="236"/><line x1="410" y1="230" x2="410" y2="242"/>
+        </g>
+        <polyline points="50,168 115,146 180,158 245,110 310,96 375,70" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="4 5" opacity=".7"/>
+        <g stroke="var(--fg)" stroke-width="2" stroke-linecap="square">
+          <path d="M50 136v64M43 136h14M43 200h14"/>
+          <path d="M115 118v56M108 118h14M108 174h14"/>
+          <path d="M180 114v88M173 114h14M173 202h14"/>
+          <path d="M245 88v44M238 88h14M238 132h14"/>
+          <path d="M310 62v68M303 62h14M303 130h14"/>
+          <path d="M375 52v36M368 52h14M368 88h14"/>
+        </g>
+        <g fill="var(--blue)">
+          <rect x="44" y="162" width="12" height="12"/><rect x="109" y="140" width="12" height="12"/><rect x="174" y="152" width="12" height="12"/>
+          <rect x="239" y="104" width="12" height="12"/><rect x="304" y="90" width="12" height="12"/><rect x="369" y="64" width="12" height="12"/>
+        </g>
+      </svg>
+    </div>
+    <div class="hero-meta">
+      <dl>
+        <dt>when</dt><dd>April 29–30, 2027 <span>· exact day TBA</span></dd>
+        <dt>where</dt><dd>ICLR 2027, San Francisco <span>· in person</span></dd>
+        <dt>submit</dt><dd>February 1, 2027 <span>· via OpenReview</span></dd>
+      </dl>
+    </div>
+  </aside>
+</section>
+
+<!-- ======================= ABOUT ======================= -->
+<section class="section" id="about">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">01 / about</span>
+      <h2>About</h2>
+      <div class="underline"></div>
+      <p>Why evaluation needs to become a rigorous, cumulative discipline.</p>
+    </div>
+    <div>
+      <div class="prose">
+        <p>Evaluation is a central component of modern AI research. Benchmarks shape model development, model selection, pretraining, post-training, and deployment, and increasingly inform decisions related to safety, auditing, procurement, and policy.</p>
+        <p>At the same time, AI systems are becoming substantially harder to evaluate. Their capabilities span a growing range of domains, modalities, and interaction settings; many outputs are open-ended or difficult to verify; and performance can depend strongly on prompts, tools, scaffolding, and execution environments. Evaluations themselves are increasingly exposed to the systems they measure through training data, model selection, reinforcement learning, and repeated benchmark use.</p>
+        <p>The <strong>Workshop on the Science of Evaluation (SciEval)</strong> brings together research across this broader evaluation landscape. We welcome both new benchmarks and evaluation frameworks across AI domains, and methodological work on meta-evaluation, robustness and reproducibility, statistical efficiency, learned and automated evaluators, agent and harness evaluation, evaluation integrity, infrastructure, and real-world validity. Our goal is to advance AI evaluation toward a more rigorous and cumulative technical discipline: one that develops better evaluations while also establishing principled methods for validating, maintaining, and interpreting them.</p>
+      </div>
+
+      <h3 class="sub">driving questions</h3>
+      <div class="panel">
+        <div class="row"><span class="k">Q1</span><div><h3>How should we design evaluations for modern AI systems?</h3><p>What benchmarks, tasks, environments, and protocols are needed across language, multimodal AI, scientific applications, robotics, embodied systems, and agents?</p></div></div>
+        <div class="row"><span class="k">Q2</span><div><h3>How can we determine whether an evaluation is valid, robust, and reproducible?</h3><p>How should validity, reliability, calibration, uncertainty, and sensitivity to prompts, scaffolding, harnesses, and implementation choices be measured?</p></div></div>
+        <div class="row"><span class="k">Q3</span><div><h3>How much evaluation is necessary?</h3><p>Can smaller or adaptive subsets preserve the rankings and conclusions of larger benchmarks, and how should we reason about redundancy, statistical power, and evaluation cost?</p></div></div>
+        <div class="row"><span class="k">Q4</span><div><h3>How should evaluations operate under optimization pressure?</h3><p>How do contamination, memorization, benchmark overfitting, reward hacking, evaluator gaming, and test-time cheating affect evaluation validity?</p></div></div>
+        <div class="row"><span class="k">Q5</span><div><h3>How should we evaluate judges, agents, and evaluation systems themselves?</h3><p>How should LLM judges, reward models, and verifiers be validated, and how can model capability be disentangled from the tools, harnesses, and environments surrounding an agent?</p></div></div>
+        <div class="row"><span class="k">Q6</span><div><h3>When do evaluation results generalize to the real world?</h3><p>Which evaluations predict downstream utility, deployed behavior, robustness, or safety-relevant outcomes, and what claims can benchmark results legitimately support?</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= CALL FOR PAPERS ======================= -->
+<section class="section" id="cfp">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">02 / call for papers</span>
+      <h2>Call for Papers</h2>
+      <div class="underline"></div>
+      <p>Methodological and empirical work across the full lifecycle of AI evaluation.</p>
+    </div>
+    <div>
+      <div class="prose">
+        <p>SciEval welcomes research ranging from the construction of new benchmarks and domain-specific evaluation suites to methods for validating, stress-testing, interpreting, automating, and maintaining evaluation systems. We aim to represent evaluation problems across a broad range of AI systems, application domains, and deployment settings. Relevant topics include, but are not limited to:</p>
+      </div>
+      <div class="cards" style="margin-top:26px">
+        <div class="card"><span class="n">01</span><h3>Benchmarks and domain-specific evaluation</h3><p>New benchmarks and suites for language and multimodal models, code, search, recommendation, finance, healthcare, law, education, cybersecurity, AI for Science, robotics, embodied AI, and autonomous systems.</p></div>
+        <div class="card"><span class="n">02</span><h3>Meta-evaluation: validity, robustness, reproducibility</h3><p>Construct and predictive validity, reliability, calibration, item analysis, benchmark saturation, uncertainty quantification, and robustness to prompts, decoding, scaffolding, and harnesses.</p></div>
+        <div class="card"><span class="n">03</span><h3>Statistical efficiency and evaluation design</h3><p>Benchmark redundancy, subset selection, adaptive testing, test compression, power analysis, sample efficiency, and preserving conclusions with far fewer evaluations.</p></div>
+        <div class="card"><span class="n">04</span><h3>Evaluation under optimization pressure</h3><p>Contamination, memorization, overfitting, Goodhart effects, reward hacking, verifier exploitation, evaluator gaming, and dynamic, private, adversarial, or continually refreshed evaluations.</p></div>
+        <div class="card"><span class="n">05</span><h3>LLM-as-a-judge, reward models, and verifiers</h3><p>Design and validation of learned evaluators: calibration, bias, consistency, disagreement, adversarial robustness, and alignment with human judgments or task outcomes.</p></div>
+        <div class="card"><span class="n">06</span><h3>Automatic and agentic evaluation</h3><p>Automatic benchmark generation, task synthesis, adversarial test generation, rubric construction, adaptive evaluation, and agents that autonomously identify model weaknesses.</p></div>
+        <div class="card"><span class="n">07</span><h3>Agents, harnesses, and interactive systems</h3><p>Evaluating long-horizon and tool-using agents, including the effects of tools, memory, interfaces, execution environments, and harness design on measured capability.</p></div>
+        <div class="card"><span class="n">08</span><h3>Evaluation integrity</h3><p>Detecting and preventing benchmark answer lookup, unauthorized tool or Internet use, environment exploitation, judge manipulation, and other behaviors that invalidate conclusions.</p></div>
+        <div class="card"><span class="n">09</span><h3>Evaluation infrastructure and lifecycle</h3><p>Harnesses, standardized protocols, provenance and versioning, contamination auditing, reproducible infrastructure, continuous evaluation, and cost-aware evaluation.</p></div>
+        <div class="card"><span class="n">10</span><h3>From evaluation to real-world claims</h3><p>External validity, cross-domain generalization, deployment-oriented evaluation, auditing, capability forecasting, and what real-world conclusions evaluation evidence can support.</p></div>
+      </div>
+      <div class="note-box" style="margin-top:28px">
+        <h3>Beyond machine learning</h3>
+        <p>Psychometrics has a century of work on validating instruments, and clinical-trial methodology has a mature treatment of power, preregistration, and multiplicity. We explicitly invite submissions from these and other measurement communities, including work that tests where those traditions do and do not transfer to machine learning.</p>
+      </div>
+      <div class="note-box plain">
+        <h3>Submission</h3>
+        <p>Submissions are handled through OpenReview with double-blind review. Formatting instructions, page limits, and the submission link will be posted here when the call opens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DATES ======================= -->
+<section class="section" id="dates">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">03 / timeline</span>
+      <h2>Important Dates</h2>
+      <div class="underline"></div>
+      <p>Tentative, following the ICLR 2027 workshop timeline.</p>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="date-row"><h3>Paper submission deadline<span class="tag orange">deadline</span></h3><span class="d">Feb 1, 2027</span></div>
+        <div class="date-row"><h3>Author notification</h3><span class="d">Feb 19, 2027</span></div>
+        <div class="date-row"><h3>Accepted papers public on OpenReview</h3><span class="d">Feb 26, 2027</span></div>
+        <div class="date-row"><h3>Camera-ready papers, videos, and final program</h3><span class="d">Mar 19, 2027</span></div>
+        <div class="date-row"><h3>Workshop at ICLR 2027, San Francisco<span class="tag blue">workshop</span></h3><span class="d">Apr 29–30, 2027</span></div>
+      </div>
+      <p class="small-note">The exact workshop day will be announced by ICLR.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SPEAKERS ======================= -->
+<section class="section" id="speakers">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">04 / invited</span>
+      <h2>Speakers</h2>
+      <div class="underline"></div>
+      <p>Six invited talks, each covering a different part of the methodological landscape.</p>
+    </div>
+    <div class="people speakers">
+      <div class="person">
+        <a href="https://www.chenfengx.com/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/chenfeng-xu.jpg" alt="Chenfeng Xu" loading="lazy"></div>
+          <div class="name"><span class="u">Chenfeng Xu</span></div>
+        </a>
+        <div class="aff">UT Austin &amp; Together AI</div>
+      </div>
+      <div class="person">
+        <a href="https://muennighoff.com/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/niklas-muennighoff.jpg" alt="Niklas Muennighoff" loading="lazy"></div>
+          <div class="name"><span class="u">Niklas Muennighoff</span></div>
+        </a>
+        <div class="aff">Stanford University</div>
+      </div>
+      <div class="person">
+        <a href="https://www.ziangxiao.com/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/ziang-xiao.jpg" alt="Ziang Xiao" loading="lazy"></div>
+          <div class="name"><span class="u">Ziang Xiao</span></div>
+        </a>
+        <div class="aff">Johns Hopkins University</div>
+      </div>
+      <div class="person">
+        <a href="https://happydzhang.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/daniel-yue-zhang.jpg" alt="Daniel Yue Zhang" loading="lazy"></div>
+          <div class="name"><span class="u">Daniel Yue Zhang</span></div>
+        </a>
+        <div class="aff">Scale AI</div>
+      </div>
+      <div class="person">
+        <a href="https://www.cs.princeton.edu/~sayashk/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/sayash-kapoor.jpg" alt="Sayash Kapoor" loading="lazy"></div>
+          <div class="name"><span class="u">Sayash Kapoor</span></div>
+        </a>
+        <div class="aff">Princeton University</div>
+      </div>
+      <div class="person">
+        <div class="photo tba"><span class="initials">?</span></div>
+        <div class="name">To be announced</div>
+        <div class="aff">Measurement validity for AI systems</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= SCHEDULE ======================= -->
+<section class="section" id="schedule">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">05 / program</span>
+      <h2>Schedule</h2>
+      <div class="underline"></div>
+      <p>Tentative. A full in-person day: six invited talks, four contributed talks, and a 90-minute poster session. Times are local.</p>
+    </div>
+    <div>
+      <div class="sched">
+        <div class="sched-col">
+          <h3>morning</h3>
+          <div class="panel">
+            <div class="slot"><span class="t">09:00–09:15</span><span>Opening remarks and framing</span></div>
+            <div class="slot"><span class="t">09:15–09:50</span><span>Invited Talk 1<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">09:50–10:25</span><span>Invited Talk 2<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">10:25–10:40</span><span>Contributed Talk 1<span class="tag yellow">oral</span></span></div>
+            <div class="slot brk"><span class="t">10:40–11:10</span><span>Coffee break</span></div>
+            <div class="slot"><span class="t">11:10–11:45</span><span>Invited Talk 3<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">11:45–12:00</span><span>Contributed Talk 2<span class="tag yellow">oral</span></span></div>
+            <div class="slot brk"><span class="t">12:00–13:00</span><span>Lunch</span></div>
+          </div>
+        </div>
+        <div class="sched-col">
+          <h3>afternoon</h3>
+          <div class="panel">
+            <div class="slot"><span class="t">13:00–13:35</span><span>Invited Talk 4<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">13:35–14:10</span><span>Invited Talk 5<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">14:10–14:25</span><span>Contributed Talk 3<span class="tag yellow">oral</span></span></div>
+            <div class="slot brk"><span class="t">14:25–14:55</span><span>Coffee break</span></div>
+            <div class="slot"><span class="t">14:55–15:30</span><span>Invited Talk 6<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">15:30–15:45</span><span>Contributed Talk 4<span class="tag yellow">oral</span></span></div>
+            <div class="slot"><span class="t">15:45–15:55</span><span>Closing remarks</span></div>
+            <div class="slot"><span class="t">15:55–17:25</span><span>Poster session<span class="tag orange">posters</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cards sched-notes">
+        <div class="note-box plain"><h3>Ten-minute Q&amp;A</h3><p>Each invited talk is 25 minutes plus 10 minutes of questions, collected and up-voted on sli.do.</p></div>
+        <div class="note-box plain"><h3>Four contributed orals</h3><p>More oral slots than usual, so that students and small groups get the stage.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= ORGANIZERS ======================= -->
+<section class="section" id="organizers">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">06 / people</span>
+      <h2>Organizers</h2>
+      <div class="underline"></div>
+      <p>From Ph.D. students to full professors, across academia and industry.</p>
+    </div>
+    <div class="people organizers">
+      <div class="person">
+        <a href="https://williamium3000.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/yijiang-li.jpg" alt="Yijiang Li" loading="lazy"></div>
+          <div class="name"><span class="u">Yijiang Li</span></div>
+        </a>
+        <div class="aff">UC San Diego</div>
+      </div>
+      <div class="person">
+        <a href="https://yunbeizhang.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/yunbei-zhang.jpg" alt="Yunbei Zhang" loading="lazy"></div>
+          <div class="name"><span class="u">Yunbei Zhang</span></div>
+        </a>
+        <div class="aff">Tulane University</div>
+      </div>
+      <div class="person">
+        <!-- No personal homepage found; links to Google Scholar. To add a photo, save images/people/han-jiang.jpg
+             and replace the initials span with <img src="images/people/han-jiang.jpg" alt="Han Jiang" loading="lazy">. -->
+        <a href="https://scholar.google.com/citations?user=BkEdnPMAAAAJ" target="_blank" rel="noopener">
+          <div class="photo"><span class="initials">HJ</span></div>
+          <div class="name"><span class="u">Han Jiang</span></div>
+        </a>
+        <div class="aff">Johns Hopkins University</div>
+      </div>
+      <div class="person">
+        <a href="https://annazou1103.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/huiqi-zou.jpg" alt="Huiqi Zou" loading="lazy"></div>
+          <div class="name"><span class="u">Huiqi Zou</span></div>
+        </a>
+        <div class="aff">Northeastern University</div>
+      </div>
+      <div class="person">
+        <a href="https://creddy.net/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/chandan-reddy.jpg" alt="Chandan K. Reddy" loading="lazy"></div>
+          <div class="name"><span class="u">Chandan K. Reddy</span></div>
+        </a>
+        <div class="aff">Virginia Tech</div>
+      </div>
+      <div class="person">
+        <a href="https://lsl.zone/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/shilong-liu.jpg" alt="Shilong Liu" loading="lazy"></div>
+          <div class="name"><span class="u">Shilong Liu</span></div>
+        </a>
+        <div class="aff">Princeton University &amp; Columbia University</div>
+      </div>
+      <div class="person">
+        <a href="https://wenhaochai.com/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/wenhao-chai.jpg" alt="Wenhao Chai" loading="lazy"></div>
+          <div class="name"><span class="u">Wenhao Chai</span></div>
+        </a>
+        <div class="aff">Princeton University</div>
+      </div>
+      <div class="person">
+        <a href="https://shangjingbo1226.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/jingbo-shang.jpg" alt="Jingbo Shang" loading="lazy"></div>
+          <div class="name"><span class="u">Jingbo Shang</span></div>
+        </a>
+        <div class="aff">UC San Diego</div>
+      </div>
+      <div class="person">
+        <a href="https://yiyihum.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/yiming-huang.jpg" alt="Yiming Huang" loading="lazy"></div>
+          <div class="name"><span class="u">Yiming Huang</span></div>
+        </a>
+        <div class="aff">UC San Diego</div>
+      </div>
+      <div class="person">
+        <a href="https://swabhs.com/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/swabha-swayamdipta.jpg" alt="Swabha Swayamdipta" loading="lazy"></div>
+          <div class="name"><span class="u">Swabha Swayamdipta</span></div>
+        </a>
+        <div class="aff">University of Southern California</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PARTICIPATION ======================= -->
+<section class="section" id="participation">
+  <div class="shell band">
+    <div class="band-head">
+      <span class="section-index">07 / access</span>
+      <h2>Get Involved</h2>
+      <div class="underline"></div>
+      <p>An open, accessible workshop for in-person and remote attendees.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><span class="n">remote</span><h3>Remote-friendly</h3><p>Speakers and authors of accepted papers provide pre-recorded videos, and questions are collected on sli.do so remote attendees can take part on equal footing.</p></div>
+      <div class="card"><span class="n">grants</span><h3>Registration grants</h3><p>We plan to offer registration fee grants for participants who might otherwise be unable to attend.</p></div>
+      <div class="card"><span class="n">mentorship</span><h3>Reviewer mentorship</h3><p>Junior reviewers are paired with senior reviewers and receive feedback as they write their reviews.</p></div>
+      <div class="card"><span class="n">review</span><h3>Double-blind review</h3><p>All submissions are reviewed double-blind on OpenReview to reduce institutional and author bias.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ======================= CONTACT / FOOTER ======================= -->
+<footer id="contact">
+  <div class="shell">
+    <div class="footer-inner">
+      <h2 class="footer-title">Questions about SciEval? <span>Get in touch.</span></h2>
+      <div class="footer-contact">
+        <div>organizers' email</div>
+        <!-- TODO: replace this placeholder with the shared organizer email, e.g.
+             <a class="u" href="mailto:ADDRESS">ADDRESS</a> -->
+        <span class="placeholder">coming soon</span>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>SciEval · The 1st Workshop on the Science of Evaluation · ICLR 2027</span>
+      <a href="#top">back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    document.querySelector('.theme-toggle').addEventListener('click', function () {
+      var current = root.getAttribute('data-theme');
+      if (!current) current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('scieval-theme', next); } catch (e) {}
+    });
+
+    var menuBtn = document.querySelector('.menu-btn');
+    var links = document.getElementById('nav-links');
+    menuBtn.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { links.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); });
+    });
+
+    var navMap = new Map(Array.prototype.map.call(links.querySelectorAll('a'), function (a) { return [a.getAttribute('href').slice(1), a]; }));
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        navMap.forEach(function (a) { a.classList.remove('active'); });
+        var a = navMap.get(e.target.id); if (a) a.classList.add('active');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    navMap.forEach(function (_, id) { var el = document.getElementById(id); if (el) io.observe(el); });
+  })();
+</script>
+</body>
+</html>
