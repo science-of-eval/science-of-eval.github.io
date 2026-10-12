@@ -170,7 +170,7 @@
 
   /* People */
   .people { display: grid; gap: 34px 22px; }
-  .people.speakers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .people.speakers { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 20px; }
   .people.organizers { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 30px 20px; }
   .photo {
     position: relative; aspect-ratio: 1 / 1; overflow: hidden;
@@ -309,7 +309,7 @@
     </div>
     <div class="hero-meta">
       <dl>
-        <dt>when</dt><dd>April 29–30, 2027 <span>· exact day TBA</span></dd>
+        <dt>when</dt><dd>April 29 or 30, 2027 <span>· day set by ICLR</span></dd>
         <dt>where</dt><dd>ICLR 2027, San Francisco <span>· hybrid</span></dd>
         <dt>submit</dt><dd>February 1, 2027 <span>· via OpenReview</span></dd>
       </dl>
@@ -377,7 +377,7 @@
       </div>
       <div class="note-box plain">
         <h3>Submission</h3>
-        <p>Submissions are handled through OpenReview with double-blind review. Work already published at major machine learning venues (ICLR, ICML, NeurIPS) is discouraged. Formatting instructions, page limits, and the submission link will be posted here when the call opens.</p>
+        <p>Submissions are handled through OpenReview with double-blind review. Papers are non-archival and use the ICLR LaTeX template, with 4&ndash;8 pages of main text excluding references and appendices. Accepted papers are presented as posters, and four are selected for contributed talks. Work previously published at major machine learning venues (ICLR, ICML, NeurIPS) is discouraged. The submission link will be posted here when the call opens.</p>
       </div>
       <div class="note-box plain">
         <h3>LLM usage policy</h3>
@@ -399,12 +399,11 @@
     <div>
       <div class="panel">
         <div class="date-row"><h3>Paper submission deadline<span class="tag orange">deadline</span></h3><span class="d">Feb 1, 2027</span></div>
-        <div class="date-row"><h3>Author notification</h3><span class="d">Feb 19, 2027</span></div>
-        <div class="date-row"><h3>Accepted papers public on OpenReview</h3><span class="d">Feb 26, 2027</span></div>
-        <div class="date-row"><h3>Camera-ready papers, videos, and final program</h3><span class="d">Mar 19, 2027</span></div>
-        <div class="date-row"><h3>Workshop at ICLR 2027, San Francisco<span class="tag blue">workshop</span></h3><span class="d">Apr 29–30, 2027</span></div>
+        <div class="date-row"><h3>Author notification; accepted papers public on OpenReview</h3><span class="d">Feb 26, 2027</span></div>
+        <div class="date-row"><h3>Final program announced</h3><span class="d">Apr 14, 2027</span></div>
+        <div class="date-row"><h3>Workshop at ICLR 2027, San Francisco<span class="tag blue">workshop</span></h3><span class="d">Apr 29 or 30, 2027</span></div>
       </div>
-      <p class="small-note">The exact workshop day will be announced by ICLR.</p>
+      <p class="small-note">Notification is by 11:59 p.m. AoE on February 26, 2027. The workshop day will be assigned by ICLR.</p>
     </div>
   </div>
 </section>
@@ -454,6 +453,27 @@
         </a>
         <div class="aff">The University of Texas at Austin</div>
       </div>
+      <div class="person">
+        <a href="https://swabhs.com/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/swabha-swayamdipta.jpg" alt="Swabha Swayamdipta" loading="lazy"></div>
+          <div class="name"><span class="u">Swabha Swayamdipta</span></div>
+        </a>
+        <div class="aff">University of Southern California</div>
+      </div>
+      <div class="person">
+        <a href="https://angelina-wang.infosci.cornell.edu/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/angelina-wang.jpg" alt="Angelina Wang" loading="lazy"></div>
+          <div class="name"><span class="u">Angelina Wang</span></div>
+        </a>
+        <div class="aff">Cornell Tech</div>
+      </div>
+      <div class="person">
+        <a href="https://joaquinvanschoren.github.io/home/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/joaquin-vanschoren.jpg" alt="Joaquin Vanschoren" loading="lazy"></div>
+          <div class="name"><span class="u">Joaquin Vanschoren</span></div>
+        </a>
+        <div class="aff">Eindhoven University of Technology</div>
+      </div>
     </div>
   </div>
 </section>
@@ -465,40 +485,43 @@
       <span class="section-index">05 / program</span>
       <h2>Schedule</h2>
       <div class="underline"></div>
-      <p>Tentative. A hybrid format anchored on a full in-person day, with remote access to the talks and Q&amp;A. Times are local.</p>
+      <p>Tentative. April 29 or 30, 2027, subject to the date assigned by ICLR. A full-day hybrid event, 09:00&ndash;18:00. Times are local.</p>
     </div>
     <div>
       <div class="sched">
         <div class="sched-col">
           <h3>morning</h3>
           <div class="panel">
-            <div class="slot"><span class="t">09:00–09:15</span><span>Opening remarks</span></div>
-            <div class="slot"><span class="t">09:15–10:00</span><span>Invited Talk 1<span class="tag blue">invited</span></span></div>
-            <div class="slot"><span class="t">10:00–10:45</span><span>Invited Talk 2<span class="tag blue">invited</span></span></div>
-            <div class="slot"><span class="t">10:45–11:55</span><span>Poster and Discussion Session 1<span class="tag orange">posters</span></span></div>
-            <div class="slot"><span class="t">11:55–12:10</span><span>Contributed Talk 1<span class="tag yellow">oral</span></span></div>
-            <div class="slot"><span class="t">12:10–12:25</span><span>Contributed Talk 2<span class="tag yellow">oral</span></span></div>
-            <div class="slot brk"><span class="t">12:25–13:55</span><span>Lunch</span></div>
+            <div class="slot"><span class="t">09:00–09:10</span><span>Opening remarks</span></div>
+            <div class="slot"><span class="t">09:10–09:45</span><span>Invited Talk 1<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">09:45–10:20</span><span>Invited Talk 2<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">10:20–11:20</span><span>Poster and Discussion Session 1<span class="tag orange">posters</span></span></div>
+            <div class="slot"><span class="t">11:20–11:35</span><span>Contributed Talk 1<span class="tag yellow">oral</span></span></div>
+            <div class="slot"><span class="t">11:35–11:50</span><span>Contributed Talk 2<span class="tag yellow">oral</span></span></div>
+            <div class="slot"><span class="t">11:50–12:25</span><span>Invited Talk 3<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">12:25–13:00</span><span>Invited Talk 4<span class="tag blue">invited</span></span></div>
+            <div class="slot brk"><span class="t">13:00–14:00</span><span>Lunch</span></div>
           </div>
         </div>
         <div class="sched-col">
           <h3>afternoon</h3>
           <div class="panel">
-            <div class="slot"><span class="t">13:55–14:40</span><span>Invited Talk 3<span class="tag blue">invited</span></span></div>
-            <div class="slot"><span class="t">14:40–15:25</span><span>Invited Talk 4<span class="tag blue">invited</span></span></div>
-            <div class="slot"><span class="t">15:25–16:35</span><span>Poster and Discussion Session 2<span class="tag orange">posters</span></span></div>
-            <div class="slot"><span class="t">16:35–16:50</span><span>Contributed Talk 3<span class="tag yellow">oral</span></span></div>
-            <div class="slot"><span class="t">16:50–17:05</span><span>Contributed Talk 4<span class="tag yellow">oral</span></span></div>
-            <div class="slot"><span class="t">17:05–17:50</span><span>Invited Talk 5<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">14:00–14:35</span><span>Invited Talk 5<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">14:35–15:10</span><span>Invited Talk 6<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">15:10–16:10</span><span>Poster and Discussion Session 2<span class="tag orange">posters</span></span></div>
+            <div class="slot"><span class="t">16:10–16:25</span><span>Contributed Talk 3<span class="tag yellow">oral</span></span></div>
+            <div class="slot"><span class="t">16:25–16:40</span><span>Contributed Talk 4<span class="tag yellow">oral</span></span></div>
+            <div class="slot"><span class="t">16:40–17:15</span><span>Invited Talk 7<span class="tag blue">invited</span></span></div>
+            <div class="slot"><span class="t">17:15–17:50</span><span>Invited Talk 8<span class="tag blue">invited</span></span></div>
             <div class="slot"><span class="t">17:50–18:00</span><span>Closing remarks</span></div>
           </div>
         </div>
       </div>
       <div class="cards sched-notes">
-        <div class="note-box plain"><h3>Fifteen-minute Q&amp;A</h3><p>Each invited talk is a 30-minute presentation plus 15 minutes of questions, collected and up-voted on sli.do so remote participants take part on the same footing as the room.</p></div>
-        <div class="note-box plain"><h3>Two poster &amp; discussion sessions</h3><p>One in each half of the day, moderated around questions drawn from the talks and the posters on the floor.</p></div>
-        <div class="note-box plain"><h3>Four contributed orals</h3><p>More oral slots than usual, so that students and small groups get the stage.</p></div>
-        <div class="note-box plain"><h3>Shared vocabulary</h3><p>The day opens with the organizers fixing the terms the program depends on: validity, reliability, power, and meta-evaluation.</p></div>
+        <div class="note-box plain"><h3>Eight invited talks</h3><p>35 minutes each, including five minutes of questions.</p></div>
+        <div class="note-box plain"><h3>Four contributed talks</h3><p>15 minutes each, including five minutes of questions, selected from accepted papers.</p></div>
+        <div class="note-box plain"><h3>Two poster &amp; discussion sessions</h3><p>One in each half of the day, moderated around questions raised by that half-day&rsquo;s talks.</p></div>
+        <div class="note-box plain"><h3>Hybrid</h3><p>All talks and Q&amp;A are live-streamed on Zoom and recorded; audience questions are collected through sli.do.</p></div>
       </div>
     </div>
   </div>
@@ -536,6 +559,13 @@
         <div class="aff">University of California San Diego</div>
       </div>
       <div class="person">
+        <a href="https://annazou1103.github.io/" target="_blank" rel="noopener">
+          <div class="photo"><img src="images/people/huiqi-zou.jpg" alt="Huiqi Zou" loading="lazy"></div>
+          <div class="name"><span class="u">Huiqi Zou</span></div>
+        </a>
+        <div class="aff">Northeastern University</div>
+      </div>
+      <div class="person">
         <a href="https://wenhaochai.com/" target="_blank" rel="noopener">
           <div class="photo"><img src="images/people/wenhao-chai.jpg" alt="Wenhao Chai" loading="lazy"></div>
           <div class="name"><span class="u">Wenhao Chai</span></div>
@@ -548,13 +578,6 @@
           <div class="name"><span class="u">Shilong Liu</span></div>
         </a>
         <div class="aff">Princeton University; incoming Asst. Prof., Columbia University</div>
-      </div>
-      <div class="person">
-        <a href="https://swabhs.com/" target="_blank" rel="noopener">
-          <div class="photo"><img src="images/people/swabha-swayamdipta.jpg" alt="Swabha Swayamdipta" loading="lazy"></div>
-          <div class="name"><span class="u">Swabha Swayamdipta</span></div>
-        </a>
-        <div class="aff">University of Southern California</div>
       </div>
       <div class="person">
         <a href="https://creddy.net/" target="_blank" rel="noopener">
@@ -584,7 +607,7 @@
       <p>An open, accessible workshop for in-person and remote attendees.</p>
     </div>
     <div class="cards">
-      <div class="card"><span class="n">hybrid</span><h3>Remote-friendly</h3><p>Talks and Q&amp;A are streamed with a Zoom link for remote attendees, questions are collected on sli.do, and recordings of invited and contributed talks will be posted on this website.</p></div>
+      <div class="card"><span class="n">hybrid</span><h3>Remote-friendly</h3><p>Talks and Q&amp;A are live-streamed on Zoom, questions are collected on sli.do, and accepted papers, recordings, and other materials will be posted on this website.</p></div>
       <div class="card"><span class="n">grants</span><h3>Registration grants</h3><p>We plan to offer registration fee grants for participants who might otherwise be unable to attend.</p></div>
       <div class="card"><span class="n">mentorship</span><h3>Reviewer mentorship</h3><p>Junior reviewers are paired with senior reviewers and receive feedback as they write their reviews.</p></div>
       <div class="card"><span class="n">review</span><h3>Double-blind review</h3><p>All submissions are reviewed double-blind on OpenReview to reduce institutional and author bias.</p></div>
